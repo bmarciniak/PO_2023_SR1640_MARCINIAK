@@ -17,7 +17,7 @@ public class World {
                     System.out.println("Zwierzak idzie do przodu");
                     break;
                 case BACKWARD:
-                    System.out.println("Zwierzak idzie do tyłu");
+                    System.out.println("Zwierzak idzie do tylu");
                     break;
                 case RIGHT:
                     System.out.println("Zwierzak skreca w prawo");
