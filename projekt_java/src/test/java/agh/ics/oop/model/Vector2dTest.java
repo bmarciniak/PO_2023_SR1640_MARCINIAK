@@ -169,5 +169,5 @@ class Vector2dTest {
 
     }
 
-    //przetestowac optionsparser ale nie ewiem jak
+    
 }
