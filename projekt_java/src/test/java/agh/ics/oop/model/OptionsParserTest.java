@@ -1,10 +1,13 @@
 package agh.ics.oop.model;
 import agh.ics.oop.OptionsParser;
+import agh.ics.oop.model.MoveDirection;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 public class OptionsParserTest {
     @Test
@@ -13,9 +16,13 @@ public class OptionsParserTest {
         String[] args = {"f", "b", "l", "r", "x"};
 
         //when
-        MoveDirection[] directions = OptionsParser.parse(args);
+        List<MoveDirection> directions = OptionsParser.parse(args);
         //then
-        assertArrayEquals(new MoveDirection[]{MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.LEFT, MoveDirection.RIGHT, null}, directions);
-        assertNull(directions[4]);
+
+        assertEquals(4, directions.size());
+        assertEquals(MoveDirection.FORWARD, directions.get(0));
+        assertEquals(MoveDirection.BACKWARD, directions.get(1));
+        assertEquals(MoveDirection.LEFT, directions.get(2));
+        assertEquals(MoveDirection.RIGHT, directions.get(3));
     }
 }

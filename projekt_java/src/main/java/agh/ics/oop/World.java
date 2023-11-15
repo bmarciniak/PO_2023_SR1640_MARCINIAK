@@ -2,12 +2,29 @@ package agh.ics.oop;
 import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.Animal;
+import agh.ics.oop.Simulation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class World {
     public static void main(String[] args) {
         System.out.println("System started");
-        MoveDirection[] directions = OptionsParser.parse(args);
-        run(directions);
+
+        List<MoveDirection> directions = OptionsParser.parse(args);
+        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
+
+        Simulation simulation = new Simulation(positions, directions);
+        simulation.run();
+
+
+        Animal animal = new Animal(); //tworze obiekt klasy Animal
+
+        //wyswietlenie pozycji zwierzaka w konsoli
+        Vector2d animalPosition = animal.getPosition();
+        System.out.println("Animal's position:" + animalPosition.toString());
+
 
         Vector2d position1 = new Vector2d(1,2);
         System.out.println(position1);
@@ -36,13 +53,13 @@ public class World {
 
         System.out.println("System finished");
     }
-    public static void run(MoveDirection[] directions){
+    public static void run(List<MoveDirection> directions){
         for(MoveDirection direction : directions) {
             switch(direction) {
-                case FORWARD -> System.out.println("szop is moving forward");
-                case BACKWARD -> System.out.println("szop is moving backward");
-                case RIGHT -> System.out.println("szop is turning right");
-                case LEFT -> System.out.println("szop is turning left");
+                case FORWARD -> System.out.println("Animal is moving forward");
+                case BACKWARD -> System.out.println("Animal is moving backward");
+                case RIGHT -> System.out.println("Animal is turning right");
+                case LEFT -> System.out.println("Animal is turning left");
                 default -> { throw new IllegalStateException("Unexpected value: "+ direction);}
             }
         }

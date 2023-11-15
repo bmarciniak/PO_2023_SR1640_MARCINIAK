@@ -35,7 +35,7 @@ public class Vector2d {
        int newY = this.y + other.y;
        return new Vector2d(newX, newY);
     }
-    public Vector2d substract(Vector2d other){
+    public Vector2d subtract(Vector2d other){
         int newX = this.x - other.x;
         int newY = this.y - other.y;
         return new Vector2d(newX, newY);
@@ -56,10 +56,12 @@ public class Vector2d {
         return new Vector2d(oppositeX, oppositeY);
     }
     public boolean equals(Object other){
-        if(this == other)
+        if(this == other){
             return true;
-        if (!(other instanceof Vector2d))
+        }
+        if (!(other instanceof Vector2d)){
             return false;
+        }
         Vector2d that = (Vector2d) other;
         return x == that.x && y == that.y; //uwzgledniam porownanie skladowych obiektow
     }

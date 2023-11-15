@@ -27,7 +27,7 @@ class Vector2dTest {
         Vector2d vector2 = new Vector2d(4,1);
 
         //when
-        Vector2d vector3 = vector1.substract(vector2);
+        Vector2d vector3 = vector1.subtract(vector2);
 
         //then
         assertEquals(-1, vector3.getX());
