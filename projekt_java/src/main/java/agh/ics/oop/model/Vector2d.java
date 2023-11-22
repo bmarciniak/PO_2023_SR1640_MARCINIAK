@@ -6,7 +6,7 @@ public class Vector2d {
     private final int y;
 
 
-//konstruktor:
+    //konstruktor:
     public Vector2d(int x, int y){
         this.x=x; //this wskazuje na ten konkretny obiekt (cos typu referencja) - chodzi nam o tego x z atrybutu!
         this.y=y;
@@ -21,7 +21,7 @@ public class Vector2d {
     }
 
     public String toString(){
-    return "(" + x + "," + y + ")";
+        return "(" + x + "," + y + ")";
     }
 
     public boolean precedes(Vector2d other){
@@ -31,9 +31,9 @@ public class Vector2d {
         return this.x >= other.x && this.y >= other.y;
     }
     public Vector2d add(Vector2d other){
-       int newX = this.x + other.x;
-       int newY = this.y + other.y;
-       return new Vector2d(newX, newY);
+        int newX = this.x + other.x;
+        int newY = this.y + other.y;
+        return new Vector2d(newX, newY);
     }
     public Vector2d subtract(Vector2d other){
         int newX = this.x - other.x;
@@ -66,8 +66,8 @@ public class Vector2d {
         return x == that.x && y == that.y; //uwzgledniam porownanie skladowych obiektow
     }
     @Override
-    public int hashCode(){
-        return Objects.hash(x,y);
+    public int hashCode() {
+        return Objects.hash(this.x,this.y);
     }
 
 }

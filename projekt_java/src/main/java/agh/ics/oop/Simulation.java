@@ -1,44 +1,45 @@
 package agh.ics.oop;
-
-import agh.ics.oop.model.Animal;
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.*;
 import java.util.ArrayList;
-
 import java.util.List;
 
 
 public class Simulation {
-    private List<Animal> animals;
-    private List<MoveDirection> directions;
+    private final WorldMap map;
+    private final List<Animal> animals;
+    private final List<MoveDirection> moves;
 
-    public Simulation(List<Vector2d> initialPositions, List<MoveDirection> directions) {
-        this.animals = new ArrayList<>();
-        for (Vector2d position : initialPositions) {
-            this.animals.add(new Animal(position));
-        }
-        this.directions = directions;
+    public Simulation(List<Vector2d> initialPositions, List<MoveDirection> moves, WorldMap worldMap) {
+        this.moves = moves;
+        this.map = worldMap;
+        this.animals = createAnimals(initialPositions);
     }
 
-    public List<Animal> getAnimals() {
+    public List<Animal> createAnimals(List<Vector2d> initialPositions) {
+        List<Animal> animals = new ArrayList<>();
+        for (Vector2d position : initialPositions) {
+            map.place(new Animal(position));
+            animals.add(new Animal(position));
+        }
         return animals;
     }
 
-
     public void run() {
         int numAnimals = animals.size();
-        int currentAnimalIndex = 0;
+        int numMoves = moves.size();
 
-        for (MoveDirection direction : directions) {
-            Animal currentAnimal = animals.get(currentAnimalIndex);
-            currentAnimal.move(direction);
+        System.out.println(animals);
 
-            // Wyświetlanie informacji o ruchu
-            System.out.println("Animal " + currentAnimalIndex + ": " + currentAnimal.toString());
+        for (int i=0; i < numMoves; i++) {
+            Animal currentAnimal = animals.get(i % numAnimals);
+            MoveDirection currentMove = moves.get(i);
 
-            // Przełączanie na kolejne zwierzę
-            currentAnimalIndex = (currentAnimalIndex + 1) % numAnimals;
-        }
+           map.place(currentAnimal);
+           map.move(currentAnimal, currentMove);
+           map.place(currentAnimal);
+           String mapRepresentation = map.toString();
+            System.out.println(mapRepresentation);
+
+    }
     }
 }
-
