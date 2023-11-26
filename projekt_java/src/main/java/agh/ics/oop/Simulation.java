@@ -3,42 +3,39 @@ import agh.ics.oop.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Simulation {
     private final WorldMap map;
     private final List<Animal> animals;
     private final List<MoveDirection> moves;
+   // private final GrassField grassField;
 
-    public Simulation(List<Vector2d> initialPositions, List<MoveDirection> moves, WorldMap worldMap) {
+    public Simulation(List<Vector2d> positions, List<MoveDirection> moves, WorldMap map) {
+       // this.grassField = grassField;
+        this.animals = new ArrayList<>();
         this.moves = moves;
-        this.map = worldMap;
-        this.animals = createAnimals(initialPositions);
+        this.map = map;
+        createAnimals(positions);
     }
 
-    public List<Animal> createAnimals(List<Vector2d> initialPositions) {
-        List<Animal> animals = new ArrayList<>();
-        for (Vector2d position : initialPositions) {
-            map.place(new Animal(position));
-            animals.add(new Animal(position));
+    private void createAnimals(List<Vector2d> positions) {
+        for (Vector2d position : positions) {
+            Animal animal = new Animal(position);
+            animals.add(animal);
+            map.place(animal);
         }
-        return animals;
     }
 
     public void run() {
         int numAnimals = animals.size();
         int numMoves = moves.size();
+        for (int index=0; index < numMoves; index++) {
+            MoveDirection currentMove = moves.get(index);
+            int animalIndex = index % numAnimals;
+            Animal currentAnimal = animals.get(animalIndex);
 
-        System.out.println(animals);
 
-        for (int i=0; i < numMoves; i++) {
-            Animal currentAnimal = animals.get(i % numAnimals);
-            MoveDirection currentMove = moves.get(i);
-
-           map.place(currentAnimal);
-           map.move(currentAnimal, currentMove);
-           map.place(currentAnimal);
-           String mapRepresentation = map.toString();
-            System.out.println(mapRepresentation);
+            map.move(currentAnimal, currentMove);
+            System.out.println(map);
 
     }
     }

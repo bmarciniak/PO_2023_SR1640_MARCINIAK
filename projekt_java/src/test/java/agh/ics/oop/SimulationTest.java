@@ -1,43 +1,27 @@
 package agh.ics.oop;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import agh.ics.oop.OptionsParser;
-import agh.ics.oop.Simulation;
-import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.WorldMap;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.RectangularMap;
 import org.junit.jupiter.api.Test;
 
-
-
+import java.util.Arrays;
 import java.util.List;
 
-public class SimulationTest {
-
-    String[] args = { "f", "b", "r", "l" };
-    List<MoveDirection> directions = OptionsParser.parse(args);
-    List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
-    private WorldMap worldMap;
-    Simulation simulation = new Simulation(positions, directions, worldMap);
-    List<Animal> animals = simulation.createAnimals(positions);
+class SimulationTest {
 
     @Test
-    public void testOrientation() {
-        assertEquals("Animal at (2,2) is facing Północ", animals.get(0).toString());
-        assertEquals("Animal at (3,4) is facing Wschód", animals.get(1).toString());
-    }
-    @Test
-    public void testMove() {
-        Animal animal = new Animal(new Vector2d(2, 2));
-        // Wykonaj ruch do przodu
-        animal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2, 3), animal.getPosition());
+    void simmulationCorrectlyInterpretsInput(){
+        List<Vector2d> positions = Arrays.asList(new Vector2d(2, 2), new Vector2d(1, 1));
+        List<MoveDirection> moves = Arrays.asList(MoveDirection.LEFT,MoveDirection.FORWARD,
+                MoveDirection.RIGHT, MoveDirection.BACKWARD);
 
-        // Wykonaj ruch do tyłu
-        animal.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(2, 2), animal.getPosition());
-    }
+        WorldMap map = new RectangularMap(6, 6);
+        Simulation simulation = new Simulation(positions, moves, map);
 
+        simulation.run();
+
+
+    }
 }

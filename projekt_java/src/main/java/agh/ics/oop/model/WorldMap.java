@@ -1,4 +1,5 @@
 package agh.ics.oop.model;
+import java.util.Collection;
 
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
@@ -10,6 +11,8 @@ import agh.ics.oop.model.Vector2d;
  * @author apohllo, idzik
  */
 public interface WorldMap extends MoveValidator {
+
+    Collection<WorldElement> getElements();
 
     /**
      * Place a animal on the map.
@@ -41,5 +44,9 @@ public interface WorldMap extends MoveValidator {
      * @param position The position of the animal.
      * @return animal or null if the position is not occupied.
      */
-    Animal objectAt(Vector2d position);
+    WorldElement objectAt(Vector2d position);
+
+    boolean place(Grass grass);
+
 }
+
