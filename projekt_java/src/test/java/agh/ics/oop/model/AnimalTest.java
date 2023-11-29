@@ -6,54 +6,50 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AnimalTest {
-    @Test
-    public void isDefaultCorrect(){
-        Animal animal = new Animal();
-        assertEquals(new Vector2d(2, 2), animal.getPosition());
-        assertEquals(MapDirection.NORTH, animal.getOrientation());
-    }
+class AnimalTest {
+    MoveValidator moveValidator = new MoveValidator() {
+        @Override
+        public boolean canMoveTo(Vector2d position) {
+            return position.follows(new Vector2d(0, 0)) && position.precedes(new Vector2d(5, 5));
+        }
+    };
 
     @Test
     public void isOrientationCorrect(){
-        Animal animal = new Animal();
-        animal.move(MoveDirection.RIGHT);
-        assertEquals(new Vector2d(2, 2), animal.getPosition());
-        assertEquals(MapDirection.EAST, animal.getOrientation());
+        Animal animal1 = new Animal();
+        Animal animal2 = new Animal();
+
+        animal1.move(MoveDirection.RIGHT, moveValidator);
+        animal2.move(MoveDirection.LEFT, moveValidator);
+
+        assertEquals(MapDirection.EAST, animal1.getOrientation());
+        assertEquals(MapDirection.WEST, animal2.getOrientation());
+    }
+
+
+    @Test
+    public void isPositionCorrect(){
+        Animal animal1 = new Animal(new Vector2d(2,2));
+        Animal animal2 = new Animal(new Vector2d(1,1));
+
+        animal1.move(MoveDirection.FORWARD, moveValidator);
+        animal2.move(MoveDirection.BACKWARD, moveValidator);
+
+        assertEquals(new Vector2d(2,3), animal1.getPosition());
+        assertEquals(new Vector2d(1,0), animal2.getPosition());
     }
 
     @Test
-    public void isMovingCorrect(){
-        Animal animal = new Animal(); //domyslnie ma (2,2)
+    public void isGoingOutsideMap(){
+        int height = 6;
+        Animal animal1 = new Animal(new Vector2d(0, height));
+        Animal animal2 = new Animal(new Vector2d(1,0));
 
-        animal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2,3), animal.getPosition());
+        animal1.move(MoveDirection.FORWARD, moveValidator);
+        animal2.move(MoveDirection.BACKWARD, moveValidator);
 
-        animal.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(2,2), animal.getPosition()); // (z 2,3 znizamy sie do 2,2)
-
-        animal.move(MoveDirection.RIGHT);
-        assertEquals(MapDirection.EAST, animal.getOrientation());
-
-
-        animal.move(MoveDirection.LEFT);
-        assertEquals(MapDirection.NORTH, animal.getOrientation());
-    }
-
-    @Test
-    public void isGoingOutsideMapv1(){
-        Animal animal = new Animal(new Vector2d(4, 4));
-        animal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 4), animal.getPosition());
-        assertEquals(MapDirection.NORTH, animal.getOrientation());
-    }
-
-    @Test
-    public void isGoingOutsideMapv2(){
-        Animal animal = new Animal(new Vector2d(0, 0));
-        animal.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(0, 0), animal.getPosition());
-        assertEquals(MapDirection.NORTH, animal.getOrientation());
+        assertEquals(new Vector2d(0,height), animal1.getPosition());
+        assertEquals(new Vector2d(1,0), animal2.getPosition());
     }
 
 }

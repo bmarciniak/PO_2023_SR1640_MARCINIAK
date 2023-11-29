@@ -4,20 +4,17 @@ import java.util.Objects;
 public class Vector2d {
     private final int x;
     private final int y;
-
-
-    //konstruktor:
-    public Vector2d(int x, int y){
-        this.x=x; //this wskazuje na ten konkretny obiekt (cos typu referencja) - chodzi nam o tego x z atrybutu!
-        this.y=y;
-    }
-
-
     public int getX(){ //funkcja
         return x;
     }
     public int getY(){
         return y;
+    }
+
+    //konstruktor:
+    public Vector2d(int x, int y){
+        this.x=x; //this wskazuje na ten konkretny obiekt (cos typu referencja) - chodzi nam o tego x z atrybutu!
+        this.y=y;
     }
 
     public String toString(){

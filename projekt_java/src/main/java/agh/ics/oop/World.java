@@ -10,17 +10,27 @@ public class World {
 
         List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
 
-        WorldMap map = new RectangularMap(10, 8);
+        //WorldMap worldMap = new RectangularMap(10, 10);
+        GrassField grassField = new GrassField(10);
 
-        Animal animal1 = new Animal(new Vector2d(0, 0));
-        Animal animal2 = new Animal(new Vector2d(5, 4));
-        map.place(animal1);
-        map.place(animal2);
-        String mapRepresentation = map.toString();
-        System.out.println(mapRepresentation);
 
-        Simulation simulation = new Simulation(positions, directions, map);
+        WorldMap worldMap = grassField;
+
+
+        Simulation simulation = new Simulation(positions, directions, worldMap);
         simulation.run();
+        System.out.println("System ended");
 
+    }
+
+    public static void run(MoveDirection[] parsedArgs) {
+        for (MoveDirection moveDirection : parsedArgs) {
+            switch (moveDirection) {
+                case FORWARD -> System.out.println("Animal is going forward");
+                case BACKWARD -> System.out.println("Animal is going backward");
+                case LEFT -> System.out.println("Animal is turning left");
+                case RIGHT -> System.out.println("Animal is turning right");
+            }
+        }
     }
 }

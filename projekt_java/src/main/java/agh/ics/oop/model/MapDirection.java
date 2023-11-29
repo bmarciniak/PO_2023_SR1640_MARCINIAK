@@ -6,6 +6,7 @@ public enum MapDirection {
     WEST,
     EAST;
 
+    @Override
     public String toString() {
         return switch (this) {
             case NORTH -> "Polnoc";
@@ -14,6 +15,15 @@ public enum MapDirection {
             case EAST -> "Wschod";
         };
     }
+    public String toSymbol(){
+        return switch (this) {
+            case NORTH -> "^";
+            case SOUTH -> "v";
+            case WEST -> "<";
+            case EAST -> ">";
+        };
+    }
+    
     public MapDirection next() {
         return switch (this) {
             case NORTH -> EAST;

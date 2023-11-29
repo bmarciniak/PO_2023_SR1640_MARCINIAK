@@ -7,8 +7,7 @@ import java.util.List;
 
 public class OptionsParser {
     public static List<MoveDirection> parse(String[] args) {
-
-        List<MoveDirection> directions = new ArrayList<>();
+        List<MoveDirection> directionsList = new ArrayList<>();
         for (String arg : args) {
             MoveDirection direction = switch(arg){
                 case "f" -> MoveDirection.FORWARD;
@@ -19,9 +18,9 @@ public class OptionsParser {
             };
 
             if (direction != null){
-                directions.add(direction);
+                directionsList.add(direction);
             }
         }
-        return directions;
+        return directionsList;
     }
 }

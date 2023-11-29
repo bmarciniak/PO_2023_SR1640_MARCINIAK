@@ -1,41 +1,14 @@
 package agh.ics.oop.model;
 
+import javax.xml.validation.Validator;
 import java.util.Vector;
 
-public class Animal {
-    private MapDirection orientation; //atrybut okreslajacy obecna orientacje
+public class Animal implements WorldElement{
+    public static final Vector2d LOW_BOUNDARY = new Vector2d(0, 0);
+    public static final Vector2d UP_BOUNDARY = new Vector2d(4, 4);
+
     private Vector2d position; //atrybut okreslajacy polozenie
-    private MoveValidator moveValidator;
-
-
-    // definiuje zakres obsaru, poza ktory nie mozna wyjsc:
-    private final Vector2d lowerLeft = new Vector2d(0, 0);
-    private final Vector2d upperRight = new Vector2d(4, 4);
-
-    //konstruktor domyslny
-    public Animal() {
-        this.position = new Vector2d(2, 2);
-        this.orientation = MapDirection.NORTH;
-    }
-
-    //konstruktor przyjmujacy i ustawiajacy pozycje podana z zewnatrz
-    public Animal(Vector2d initialPosition) {
-        this.position = initialPosition;
-        this.orientation = MapDirection.NORTH;
-        this.moveValidator =moveValidator; //orientacja poczatkowa
-    }
-
-    @Override
-    public String toString() {
-        return orientation.toString();
-    }
-    //tutaj nie trzeba definiowac posistion i orientation jako string, poniewaz Vector2d oraz
-    // MapDirection zawieraja metody toString() - jest to automatycznie dostarczane dla kazdej klasy w Javie
-
-    public boolean isAt(Vector2d position) {
-        return this.position.equals(position);
-        //wtedy zwraca true!
-    }
+    private MapDirection orientation; //atrybut okreslajacy obecna orientacje
 
 
     public Vector2d getPosition() {
@@ -46,18 +19,42 @@ public class Animal {
         return orientation;
     }
 
-    public void move(MoveDirection direction) {
-        Vector2d newPosition = null;
-        switch (direction) {
-            case RIGHT -> orientation = orientation.next();
-            case LEFT -> orientation = orientation.previous();
-            case FORWARD -> newPosition = position.add(orientation.toUnitVector());
-            case BACKWARD -> newPosition = position.subtract(orientation.toUnitVector());
-            default -> {
-            }
-        }
-        if (newPosition != null && moveValidator.canMoveTo(newPosition)){
-            position = newPosition;
+    //konstruktor domyslny
+    public Animal() {
+        this(new Vector2d(2, 2));
+    }
+
+    //konstruktor przyjmujacy i ustawiajacy pozycje podana z zewnatrz
+    public Animal(Vector2d position) {
+        this.position = position;
+        this.orientation = MapDirection.NORTH;
+    }
+
+    @Override
+    public String toString() {
+        return orientation.toSymbol();
+    }
+
+    public boolean isAt(Vector2d position) {
+        return this.position.equals(position);
+        //return Object.equals(this.position, position);
+
+    }
+
+
+    public void move(MoveDirection direction, MoveValidator validator) {
+        orientation = switch (direction) {
+            case RIGHT -> orientation.next();
+            case LEFT -> orientation.previous();
+            case FORWARD, BACKWARD -> orientation;
+        };
+        Vector2d newPosition = switch (direction) {
+            case FORWARD -> position.add(orientation.toUnitVector());
+            case BACKWARD -> position.subtract(orientation.toUnitVector());
+            case LEFT, RIGHT -> position;
+        };
+        if (validator.canMoveTo(newPosition)) {
+            this.position = newPosition;
         }
     }
 }
