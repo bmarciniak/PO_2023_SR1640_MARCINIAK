@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import java.util.*;
 
-abstract class AbstractWorldMap implements WorldMap{
+public abstract class AbstractWorldMap implements WorldMap{
 
     protected Map<Vector2d, Animal> animals = new HashMap<>();
     protected List<MapChangeListener> observers = new ArrayList<>();

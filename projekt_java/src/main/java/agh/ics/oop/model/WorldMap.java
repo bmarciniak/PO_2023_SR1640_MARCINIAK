@@ -13,7 +13,7 @@ import agh.ics.oop.model.Vector2d;
 public interface WorldMap extends MoveValidator {
 
 
-
+    void addObserver(MapChangeListener observer);
     /**
      * Place a animal on the map.
      *
