@@ -4,9 +4,7 @@ import agh.ics.oop.model.MoveDirection;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class OptionsParserTest {
@@ -24,5 +22,13 @@ public class OptionsParserTest {
         assertEquals(MoveDirection.BACKWARD, directions.get(1));
         assertEquals(MoveDirection.LEFT, directions.get(2));
         assertEquals(MoveDirection.RIGHT, directions.get(3));
+    }
+    @Test
+    void isIllegalArgumentExceptionWorks(){
+        String[] invalidArgs = {"f", "b", "l", "r", "r", "x"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            OptionsParser.parse(invalidArgs);
+        });
     }
 }

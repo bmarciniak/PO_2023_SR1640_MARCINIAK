@@ -1,29 +1,73 @@
 package agh.ics.oop.model;
+import agh.ics.oop.model.util.MapVisualizer;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 abstract class AbstractWorldMap implements WorldMap{
-    protected  Map<Vector2d, Animal> animals = new HashMap<>();
-    private final List<Grass> grassFields = new ArrayList<>();
 
+    protected Map<Vector2d, Animal> animals = new HashMap<>();
+    protected List<MapChangeListener> observers = new ArrayList<>();
+    @Override
+    public abstract Boundary getCurrentBounds();
+
+    public boolean place(Animal animal) throws PositionAlreadyOccupiedException{
+        if (!animals.containsKey(animal.getPosition())){
+            animals.put(animal.getPosition(), animal);
+            return true;
+        }else{
+            throw new PositionAlreadyOccupiedException(animal.getPosition());
+        }
+
+    }
+
+    public void addObserver(MapChangeListener observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(MapChangeListener observer) {
+        observers.remove(observer);
+    }
 
     @Override
-    public boolean isOccupied(Vector2d position) {
-       // return animals.containsKey(position);
-        return false;
+    public void move(Animal animal, MoveDirection direction){
+        Vector2d newPosition = animal.getPosition().add(animal.getOrientation().toUnitVector());
+        if (canMoveTo(newPosition) && !animals.containsKey(newPosition)){
+            animals.remove(animal.getPosition());
+            animal.move(direction, this);
+            animals.put(animal.getPosition(), animal);
+        }
     }
 
 
     @Override
-    public abstract WorldElement objectAt(Vector2d position);
-
-    @Override
-    public abstract boolean place(Animal animal);
-
-    @Override
-    public boolean place(Grass grass) {
-        return false;
+    public boolean canMoveTo(Vector2d position){
+        return !animals.containsKey(position);
     }
+
+
+
+    @Override
+    public WorldElement objectAt(Vector2d position){
+        return animals.get(position);
+    }
+
+    @Override
+    public List<Animal> getAnimals() {
+        return new ArrayList<>(animals.values());
+    }
+
+    @Override
+    public Collection<WorldElement> getElements() {
+        List<WorldElement> elements = new ArrayList<>(animals.values());
+        return elements;
+    }
+
+    @Override
+    public String toString(){
+        MapVisualizer visualizer = new MapVisualizer(this);
+        Boundary bounds =getCurrentBounds();
+        return visualizer.draw(bounds.lowerLeft(), bounds.upperRight());
+    }
+
 }
