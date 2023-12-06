@@ -8,18 +8,20 @@ import java.util.List;
 public class OptionsParser {
     public static List<MoveDirection> parse(String[] args) {
         List<MoveDirection> directionsList = new ArrayList<>();
-        for (String arg : args) {
-            MoveDirection direction = switch(arg){
-                case "f" -> MoveDirection.FORWARD;
-                case "b" -> MoveDirection.BACKWARD;
-                case "r" -> MoveDirection.RIGHT;
-                case "l" -> MoveDirection.LEFT;
-                default -> null;
-            };
-
-            if (direction != null){
+        try {
+            for (String arg : args) {
+                MoveDirection direction = switch(arg){
+                    case "f", "forward" -> MoveDirection.FORWARD;
+                    case "b", "backward" -> MoveDirection.BACKWARD;
+                    case "r", "right" -> MoveDirection.RIGHT;
+                    case "l", "left" -> MoveDirection.LEFT;
+                    default -> throw new IllegalArgumentException(arg + " is not a legal move specification");
+                };
                 directionsList.add(direction);
             }
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid argument: " + e.getMessage());
+            System.exit(1);
         }
         return directionsList;
     }

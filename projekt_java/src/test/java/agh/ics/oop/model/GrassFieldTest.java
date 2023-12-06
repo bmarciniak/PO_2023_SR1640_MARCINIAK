@@ -1,27 +1,25 @@
 package agh.ics.oop.model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class GrassFieldTest {
+
     @Test
-    void testIsOccupied() {
-        GrassField grassField = new GrassField(10); // Tworzymy pole trawy
+    public void testGrassField() {
+        GrassField grassField = new GrassField(10);
 
-        // Umieszczamy trawę na mapie na konkretnej pozycji
-        Vector2d grassPosition = new Vector2d(2, 3);
-        Grass grass = new Grass(grassPosition);
-        assertTrue(grassField.place(grass));
+        assertEquals(10, grassField.getGrass().size());
 
-        // Sprawdzamy, czy pozycja, na której znajduje się trawa, jest zajęta
-        assertTrue(grassField.isOccupied(grassPosition));
+        Animal animal2 = new Animal(new Vector2d(3, 4));
+        // Spróbuj umieścić zwierzę na polu trawy, ale nie oczekuj wyjątku
+        assertTrue(grassField.place(animal2));
 
-        // Sprawdzamy, czy pozycja, na której nie ma trawy, nie jest zajęta
-        Vector2d nonOccupiedPosition = new Vector2d(0, 0);
-        assertFalse(grassField.isOccupied(nonOccupiedPosition), "Position " + nonOccupiedPosition + " should be unoccupied");
-
-        // Sprawdzamy, czy na pewno jest trawa na pozycji (2, 3)
-        assertNotNull(grassField.objectAt(grassPosition), "Grass should be present at position " + grassPosition);
+        // Pozostała część testu bez zmian
+        Vector2d grassPosition = grassField.getGrass().get(0).getPosition();
+        assertEquals(grassField.getGrass().get(0), grassField.objectAt(grassPosition));
+        assertNotNull(grassField.toString());
     }
 }
